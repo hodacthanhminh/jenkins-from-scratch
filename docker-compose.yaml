@@ -10,15 +10,16 @@ services:
         - "thanhminh.hodac/jenkins:2.401.3-lts-jdk11"
     container_name: jenkins-dev
     environment:
-      - DOCKER_HOST=tcp://docker:2376
+      - DOCKER_HOST=unix:///var/run/docker.sock
       - DOCKER_CERT_PATH=/certs/client
-      - DOCKER_TLS_VERIFY=1
+    privileged: true
     ports:
       - "8080:8080"
       - "50000:50000"
     volumes:
       - "jenkins-data:/var/jenkins_home"
       - "jenkins-docker-certs:/certs/client:ro"
+      - "/var/run/docker.sock:/var/run/docker.sock"
     restart: on-failure
     networks:
       - jenkins
